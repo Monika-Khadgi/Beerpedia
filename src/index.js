@@ -12,12 +12,12 @@ async function renderAllBeers() {
   let beer = await getRandomItemWithUrl(url);
   let html = '';
   beer.forEach(beer => {
-      let htmlSegment = `<div class="mt-3 py-3 px-3 ">
+      let htmlSegment = `<div class="col-lg-4 card-beer">
                           <img class="img-beer" src="${beer.image_url}" >
                           <h2>${beer.id}. ${beer.name}</h2>
                           <h3>${beer.first_brewed}</h3>
                           <div class="email"><a href="email:${beer.description}"></a></div>
-                          <button onclick=beerDescription(${beer.id})>Read more</button>
+                          <button class="btn button mx-2" onclick=beerDescription(${beer.id})>Read more</button>
                       </div>`;
 
       html += htmlSegment;
@@ -33,7 +33,7 @@ async function renderRandomBeer() {
   let beer = await getRandomItemWithUrl(url);
   let html = '';
   beer.forEach(beer => {
-      let htmlSegment = `<div class=" mt-3 py-3 px-3">
+      let htmlSegment = `<div class=" mt-3 py-3 ">
                           <img class="img-beer" src="${beer.image_url}" >
                           <h2>${beer.name} ${beer.first_brewed}</h2>
                           <div class="email"><a href="email:${beer.description}"</a></div>
@@ -80,7 +80,7 @@ async function beerDescription(beerId) {
                           <h3>${i.first_brewed}</h3>
                           <p class="description">${i.description}</p>
                           <h3>${i.food_pairing[0]}></h3>
-                          <h3>${i.brewers_tips}></h3>
+                          <p>${i.brewers_tips}></p>
                           <h3>${i.ph}></h3>
                       </div>`;
 
