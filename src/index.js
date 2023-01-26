@@ -33,7 +33,7 @@ async function renderRandomBeer() {
   let beer = await getRandomItemWithUrl(url);
   let html = '';
   beer.forEach(beer => {
-      let htmlSegment = `<div class=" mt-3 py-3 ">
+      let htmlSegment = `<div class="col-lg-6 card-beer">
                           <img class="img-beer" src="${beer.image_url}" >
                           <h2>${beer.name} ${beer.first_brewed}</h2>
                           <div class="email"><a href="email:${beer.description}"</a></div>
@@ -55,7 +55,7 @@ async function renderSearch() {
 
   let html = '';
   beer.forEach(beer => {
-      let htmlSegment = `<div class=" mt-3 py-3 px-3">
+      let htmlSegment = `<div class=" col-lg-6 card-beer">
                           <img class="img-beer" src="${beer.image_url}" >
                           <h2>${beer.name} ${beer.first_brewed}</h2>
                           <div class="email"><a href="email:${beer.description}"</a></div>
@@ -74,7 +74,7 @@ async function beerDescription(beerId) {
   let html = '';
   console.log(beerInJson)
   beerInJson.forEach(i => {
-      let htmlSegment = `<div class="mt-3 py-3 px-3 ">
+      let htmlSegment = `<div class="col-lg-6 card-beer">
                           <img class="img-beer" src="${i.image_url}" >
                           <h2>${i.id}. ${i.name}</h2>
                           <h3>${i.first_brewed}</h3>
