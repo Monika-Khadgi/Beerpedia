@@ -1,9 +1,9 @@
 *{
 font-family: 'Pacifico', 'cursive', 'sans-serif';
 color:#001220;;
-  
-
-
+}
+.main-container{
+  background-color: #e34c67;
 }
 .brand-name{
   font-size: 45px;

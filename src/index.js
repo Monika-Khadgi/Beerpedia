@@ -17,6 +17,7 @@ async function renderAllBeers() {
                           <h2>${beer.id}. ${beer.name}</h2>
                           <h3>${beer.first_brewed}</h3>
                           <div class="email"><a href="email:${beer.description}"></a></div>
+                          <button onclick=beerDescription(${beer.id})>Read more</button>
                       </div>`;
 
       html += htmlSegment;
@@ -45,6 +46,8 @@ async function renderRandomBeer() {
   randomContainer.innerHTML = html;
 }
 
+
+
 async function renderSearch() {
   const beerName = document.getElementById('txt-search-beer').value;
   let url = `https://api.punkapi.com/v2/beers?beer_name=${beerName}`;
@@ -64,5 +67,27 @@ async function renderSearch() {
   let searchContainer = document.querySelector('.searchContainer');
   searchContainer.innerHTML = html;
 }
+
+async function beerDescription(beerId) {
+  let url = `https://api.punkapi.com/v2/beers/${beerId}`;
+  let beerInJson = await getRandomItemWithUrl(url);
+  let html = '';
+  console.log(beerInJson)
+  beerInJson.forEach(i => {
+      let htmlSegment = `<div class="mt-3 py-3 px-3 ">
+                          <img class="img-beer" src="${i.image_url}" >
+                          <h2>${i.id}. ${i.name}</h2>
+                          <h3>${i.first_brewed}</h3>
+                          <p class="description">${i.description}</p>
+                          <h3>${i.food_pairing[0]}></h3>
+                          <h3>${i.brewers_tips}></h3>
+                          <h3>${i.ph}></h3>
+                      </div>`;
+
+      html += htmlSegment;
+  }) 
+  let descriptionContainer = document.querySelector('.descriptionContainer');
+  descriptionContainer.innerHTML = html;
+};
 
 renderAllBeers();
