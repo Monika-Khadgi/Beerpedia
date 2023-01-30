@@ -12,12 +12,13 @@ async function renderAllBeers() {
   let beer = await getRandomItemWithUrl(url);
   let html = '';
   beer.forEach(beer => {
-      let htmlSegment = `<div class="col-lg-4 card-beer">
-                          <img class="img-beer" src="${beer.image_url}" >
-                          <h2>${beer.id}. ${beer.name}</h2>
+      let htmlSegment = `<div class="col-lg-4 col-md-6 col-sm-12 card-beer">
+                         <img class="img-beer" src="${beer.image_url}" >
+                         <div> <h2>${beer.id}. ${beer.name}</h2>
                           <h3>${beer.first_brewed}</h3>
-                          <div class="email"><a href="email:${beer.description}"></a></div>
                           <button class="btn button mx-2" onclick=beerDescription(${beer.id})>Read more</button>
+                          <button class="btn button mx-2" onclick=addToCart(${beer.id})>Add to cart</button>
+                          </div>
                       </div>`;
 
       html += htmlSegment;
@@ -30,13 +31,12 @@ async function renderAllBeers() {
 async function renderRandomBeer() {
   let url = 'https://api.punkapi.com/v2/beers/random';
 
-  let beer = await getRandomItemWithUrl(url);
+  let beerInfo = await getRandomItemWithUrl(url);
   let html = '';
-  beer.forEach(beer => {
-      let htmlSegment = `<div class="col-lg-6 card-beer">
+  beerInfo.forEach(beer => {
+      let htmlSegment = `<div class=" col-lg-6 card-beer">
                           <img class="img-beer" src="${beer.image_url}" >
                           <h2>${beer.name} ${beer.first_brewed}</h2>
-                          <div class="email"><a href="email:${beer.description}"</a></div>
                       </div>`;
 
       html += htmlSegment;
@@ -46,33 +46,19 @@ async function renderRandomBeer() {
   randomContainer.innerHTML = html;
 }
 
-
-
 async function renderSearch() {
   const beerName = document.getElementById('txt-search-beer').value;
   let url = `https://api.punkapi.com/v2/beers?beer_name=${beerName}`;
   let beer = await getRandomItemWithUrl(url);
 
-  let html = '';
-  beer.forEach(beer => {
-      let htmlSegment = `<div class=" col-lg-6 card-beer">
-                          <img class="img-beer" src="${beer.image_url}" >
-                          <h2>${beer.name} ${beer.first_brewed}</h2>
-                          <div class="email"><a href="email:${beer.description}"</a></div>
-                      </div>`;
-
-      html += htmlSegment;
-  });
-
+  
   let searchContainer = document.querySelector('.searchContainer');
   searchContainer.innerHTML = html;
 }
 
-async function beerDescription(beerId) {
-  let url = `https://api.punkapi.com/v2/beers/${beerId}`;
-  let beerInJson = await getRandomItemWithUrl(url);
+async function returnBeerInfoInDetailHtml(beerInJson) {
   let html = '';
-  console.log(beerInJson)
+  
   beerInJson.forEach(i => {
       let htmlSegment = `<div class="col-lg-6 card-beer">
                           <img class="img-beer" src="${i.image_url}" >
@@ -86,8 +72,36 @@ async function beerDescription(beerId) {
 
       html += htmlSegment;
   }) 
+
+  return html;
+}
+
+async function beerDescription(beerId) {
+  let url = `https://api.punkapi.com/v2/beers/${beerId}`;
+  let beerInJson = await getRandomItemWithUrl(url);
+
+  html = returnBeerInfoInDetailHtml(beerInJson);
+  
   let descriptionContainer = document.querySelector('.descriptionContainer');
   descriptionContainer.innerHTML = html;
 };
 
+async function addToCart(beerId){
+  cart = []
+  let url = `https://api.punkapi.com/v2/beers/${beerId}`;
+  let beerInJson = await getRandomItemWithUrl(url);
+  beerInJson.forEach(i => {    
+    sessionStorage.setItem(JSON.stringify(i), 'cart')
+    });
+}
+async function showCart() {
+  cart = JSON.parse(sessionStorage.getItem('cart'));
+  console.log(cart)
+/*
+  cartHtml = returnBeerInfoInDetailHtml(cart);
+
+  let descriptionContainer = document.querySelector('.cartContainer');
+  descriptionContainer.innerHTML = html;
+  */
+}
 renderAllBeers();
