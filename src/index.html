@@ -15,34 +15,48 @@
 <div class="container-fluid circle px-0">
   <div>
     <div class="space layer">
-      <nav class="navbar">
+      <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+        <h5 class="my-0 mr-md-auto font-weight-normal">Beerpedia</h5>
+        <nav class="my-2 my-md-0 mr-md-3">
+          <input type="search" id="txt-search-beer" class="form-control " onchange="" />
+          <button onclick="renderSearch()" type="button" class="btn button mx-2"><i class="fas fa-search">Search</i></button>
+          <button onclick="renderRandomBeer()" type="button" class="btn button ">
+            <i class="fas fa-search"> Random</i>
+          </button>
+        </nav>
+        <a class="btn btn-outline-primary" href="cart.html">Cart</a>
+      </div>
+      
+
+      <!-- <nav class="navbar">
     <div class="brand-name ml-3">Beerpedia</div>
     <div class="row d-flex justify-content-center">
       <div class="searchBar py-3 px-3">
         <div class="input-group">
-          <div class="form-outline">
-            <input type="search" id="txt-search-beer" class="form-control " onchange="" />
-          </div>
-          <button onclick="renderSearch()" type="button" class="btn button mx-2">
-            <i class="fas fa-search">Search</i>
-          </button>
-          <button onclick="renderRandomBeer()" type="button" class="btn button ">
-            <i class="fas fa-search"> Random</i>
-          </button>
-          <button onclick="showCart()" type="button" class="btn button mx-2">
-            <i class="fas fa-search"> Cart</i>
-          </button>
+          <ul class="row">
+            <li><div class="form-outline">
+               <input type="search" id="txt-search-beer" class="form-control " onchange="" />
+             </div></li>
+             <li><button onclick="renderSearch()" type="button" class="btn button mx-2">
+               <i class="fas fa-search">Search</i>
+             </button></li>
+             <li><button onclick="renderRandomBeer()" type="button" class="btn button ">
+               <i class="fas fa-search"> Random</i>
+             </button></li>
+             <li><a class="mx-2 btn btn-success" href="cart.html">Cart</a></li>
+             </ul> 
         </div>
       </div>
     </div>
-    </nav>
+    </nav> -->
+    </div>  
     <div class="row">
-      </div>
       <div class="searchContainer"></div>
     </div>
     <div class="row">
       <div class="randomContainer"></div>
     </div>
+    
     <div class="row">
       <div class="col-12">
         <div class="container-beer d-flex flex-wrap">
@@ -52,9 +66,6 @@
     <div class="row">
       <div class="descriptionContainer"></div>
     </div>
-  </div>
-  <div class="row">
-    <div class="cartContainer"></div>
   </div>
 </div>
   <script src="index.js"></script>

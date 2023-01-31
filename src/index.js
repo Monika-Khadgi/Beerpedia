@@ -12,9 +12,10 @@ async function renderAllBeers() {
   let beer = await getRandomItemWithUrl(url);
   let html = '';
   beer.forEach(beer => {
-      let htmlSegment = `<div class="col-lg-4 col-md-6 col-sm-12 card-beer">
-                         <img class="img-beer" src="${beer.image_url}" >
-                         <div> <h2>${beer.id}. ${beer.name}</h2>
+      let htmlSegment = `<div class="col-lg-4 col-md-6 col-sm-12 card card-beer">
+                         <img class="img-beer card-img-top" src="${beer.image_url}" >
+                         <div class="card-body> 
+                         <h2 class="card-title>${beer.id}. ${beer.name}</h2>
                           <h3>${beer.first_brewed}</h3>
                           <button class="btn button mx-2" onclick=beerDescription(${beer.id})>Read more</button>
                           <button class="btn button mx-2" onclick=addToCart(${beer.id})>Add to cart</button>
@@ -60,8 +61,8 @@ async function returnBeerInfoInDetailHtml(beerInJson) {
   let html = '';
   
   beerInJson.forEach(i => {
-      let htmlSegment = `<div class="col-lg-6 card-beer">
-                          <img class="img-beer" src="${i.image_url}" >
+      let htmlSegment = `<div class="col-lg-6 card card-beer">
+                          <img class="img-beer card-img-top" src="${i.image_url}" >
                           <h2>${i.id}. ${i.name}</h2>
                           <h3>${i.first_brewed}</h3>
                           <p class="description">${i.description}</p>
@@ -87,21 +88,14 @@ async function beerDescription(beerId) {
 };
 
 async function addToCart(beerId){
-  cart = []
+  let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+
   let url = `https://api.punkapi.com/v2/beers/${beerId}`;
   let beerInJson = await getRandomItemWithUrl(url);
-  beerInJson.forEach(i => {    
-    sessionStorage.setItem(JSON.stringify(i), 'cart')
-    });
-}
-async function showCart() {
-  cart = JSON.parse(sessionStorage.getItem('cart'));
-  console.log(cart)
-/*
-  cartHtml = returnBeerInfoInDetailHtml(cart);
+  cart.push(beerInJson);  
+  
+  sessionStorage.setItem('cart', JSON.stringify(cart))
 
-  let descriptionContainer = document.querySelector('.cartContainer');
-  descriptionContainer.innerHTML = html;
-  */
 }
+  
 renderAllBeers();

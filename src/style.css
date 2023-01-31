@@ -2,6 +2,21 @@
 font-family: 'Special Elite', 'cursive;';
 color:#001220;;
 }
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
+a:hover {
+  color:#00A0C6; 
+  text-decoration:none; 
+  cursor:pointer;  
+}
+
+li{
+  list-style-type: none;
+}
 .main-container{
   background-color: #e34c67;
 }
@@ -11,8 +26,8 @@ color:#001220;;
 
 }
 .img-beer {
-  width: auto;
-  height: 150px;
+  height: 222px;
+  padding-top: 10px;
 }
 
 .card-beer {
