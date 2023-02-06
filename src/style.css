@@ -1,6 +1,7 @@
-*{
-font-family: 'Special Elite', 'cursive;';
-color:#001220;;
+* {
+  font-family: 'Special Elite', 'cursive;';
+  color: #001220;
+  ;
 }
 
 a {
@@ -9,50 +10,69 @@ a {
 }
 
 a:hover {
-  color:#00A0C6; 
-  text-decoration:none; 
-  cursor:pointer;  
+  color: #00A0C6;
+  text-decoration: none;
+  cursor: pointer;
 }
 
-li{
-  list-style-type: none;
+.input-field{
+  height: 40px;
+  position:relative;
+  background:white;
+  border: none;
+  -webkit-border-radius: 5px;
 }
-.main-container{
-  background-color: #e34c67;
-}
-.brand-name{
+
+
+.brand-name {
   font-size: 45px;
   font-weight: bold;
-
 }
+
+.container-beer {
+  justify-content: center;
+}
+
 .img-beer {
-  height: 222px;
+  width: 10%;
   padding-top: 10px;
 }
 
 .card-beer {
-  padding-bottom: 4rem;
-  padding-left: 4rem;
+  margin-top: 2%;
+  padding-bottom: 2%;
+  background-color: transparent;
+  border-radius: 1.25rem;
+
 }
 
-.button{
+.button {
   background: #48ab73;
 }
-.space{
+
+.space {
   aspect-ratio: 960/300;
   width: 100%;
   /* background-position: center; */
   background-size: cover;
 }
-.wavy{
+
+.wavy {
   background-image: url(./wavy.svg);
 }
-.layer{
+
+.layer {
   background-image: url(./layer.svg);
 }
-.circle{
+
+.circle {
   background-image: url(./circle.svg);
 }
-
-
-
+.nav-cart-wrapper{
+  position: relative;
+}
+.nav-cart-wrapper span{
+  position: absolute;
+  top: -15px;
+  left: 26px;
+}

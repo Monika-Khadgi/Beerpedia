@@ -1,67 +1,82 @@
 async function getRandomItemWithUrl(url) {
-  try {
-      let res = await fetch(url);
-      return await res.json();
-  } catch (error) {
-      console.log(error);
-  }
+    try {
+        let res = await fetch(url);
+        return await res.json();
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 async function renderAllBeers() {
-  let url = 'https://api.punkapi.com/v2/beers';
-  let beer = await getRandomItemWithUrl(url);
-  let html = '';
-  beer.forEach(beer => {
-      let htmlSegment = `<div class="col-lg-4 col-md-6 col-sm-12 card card-beer">
+    let url = 'https://api.punkapi.com/v2/beers';
+    let beer = await getRandomItemWithUrl(url);
+    let html = '';
+    beer.forEach(beer => {
+        let htmlSegment = `<div class="col-lg-3 col-md-3 col-sm-12 card mx-2 card-beer">
                          <img class="img-beer card-img-top" src="${beer.image_url}" >
                          <div class="card-body> 
                          <h2 class="card-title>${beer.id}. ${beer.name}</h2>
                           <h3>${beer.first_brewed}</h3>
-                          <button class="btn button mx-2" onclick=beerDescription(${beer.id})>Read more</button>
-                          <button class="btn button mx-2" onclick=addToCart(${beer.id})>Add to cart</button>
+            <div class="beer-info-container"></div>
+            <button class="btn button" onclick=beerDescription(${beer.id}),scrollToTop()>Read more</button>
+                          <button class="btn button " onclick=addToCart(${beer.id})>Add to cart</button>
                           </div>
                       </div>`;
 
-      html += htmlSegment;
-  });
+        html += htmlSegment;
+    });
 
-  let container = document.querySelector('.container-beer');
-  container.innerHTML = html;
+    let container = document.querySelector('.container-beer');
+    if (container != null)
+    container.innerHTML = html;
 }
 
 async function renderRandomBeer() {
-  let url = 'https://api.punkapi.com/v2/beers/random';
+    let url = 'https://api.punkapi.com/v2/beers/random';
 
-  let beerInfo = await getRandomItemWithUrl(url);
-  let html = '';
-  beerInfo.forEach(beer => {
-      let htmlSegment = `<div class=" col-lg-6 card-beer">
+    let beerInfo = await getRandomItemWithUrl(url);
+    let html = '';
+    beerInfo.forEach(beer => {
+        let htmlSegment = `<div class=" col-lg-6 card card-beer">
                           <img class="img-beer" src="${beer.image_url}" >
                           <h2>${beer.name} ${beer.first_brewed}</h2>
                       </div>`;
 
-      html += htmlSegment;
-  });
+        html += htmlSegment;
+    });
 
-  let randomContainer = document.querySelector('.randomContainer');
-  randomContainer.innerHTML = html;
+    let randomContainer = document.querySelector('.beer-info-container');
+    randomContainer.innerHTML = html;
 }
 
 async function renderSearch() {
-  const beerName = document.getElementById('txt-search-beer').value;
-  let url = `https://api.punkapi.com/v2/beers?beer_name=${beerName}`;
-  let beer = await getRandomItemWithUrl(url);
+    const beerName = document.getElementById('txt-search-beer').value;
+    let url = `https://api.punkapi.com/v2/beers?beer_name=${beerName}`;
+    let beerInfo = await getRandomItemWithUrl(url);
+    let html = '';
+    beerInfo.forEach(beer => {
+        let htmlSegment = `<div class=" col-lg-6 card card-beer">
+                        <img class="img-beer" src="${beer.image_url}" >
+                        <h2>${beer.name} ${beer.first_brewed}</h2>
+                    </div>`;
 
-  
-  let searchContainer = document.querySelector('.searchContainer');
-  searchContainer.innerHTML = html;
+        html += htmlSegment;
+    });
+
+
+    let searchContainer = document.querySelector('.beer-info-container');
+    searchContainer.innerHTML = html;
 }
 
-async function returnBeerInfoInDetailHtml(beerInJson) {
-  let html = '';
-  
-  beerInJson.forEach(i => {
-      let htmlSegment = `<div class="col-lg-6 card card-beer">
+
+async function beerDescription(beerId) {
+    let url = `https://api.punkapi.com/v2/beers/${beerId}`;
+    let beerInJson = await getRandomItemWithUrl(url);
+
+    let html = '';
+
+    beerInJson.forEach(i => {
+        let htmlSegment = `<div class="col-lg-6 card card-beer">
                           <img class="img-beer card-img-top" src="${i.image_url}" >
                           <h2>${i.id}. ${i.name}</h2>
                           <h3>${i.first_brewed}</h3>
@@ -71,31 +86,60 @@ async function returnBeerInfoInDetailHtml(beerInJson) {
                           <h3>${i.ph}></h3>
                       </div>`;
 
-      html += htmlSegment;
-  }) 
+        html += htmlSegment;
+    })
 
-  return html;
+    let descriptionContainer = document.querySelector('.beer-info-container');
+    descriptionContainer.innerHTML = html;
 }
 
-async function beerDescription(beerId) {
-  let url = `https://api.punkapi.com/v2/beers/${beerId}`;
-  let beerInJson = await getRandomItemWithUrl(url);
+async function addToCart(beerId) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    console.log(cart)
 
-  html = returnBeerInfoInDetailHtml(beerInJson);
-  
-  let descriptionContainer = document.querySelector('.descriptionContainer');
-  descriptionContainer.innerHTML = html;
-};
+    let url = `https://api.punkapi.com/v2/beers/${beerId}`;
+    let beerInJson = await getRandomItemWithUrl(url);
 
-async function addToCart(beerId){
-  let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+    if (cart.length == 0){
+      cart.push(beerInJson);
+      cart[0][0].total_order_count = 1;
+    } else {
+      cart.forEach(cartItem => {
+        if(cartItem[0].id == beerInJson[0].id) {
+          console.log(cartItem[0].id);
+          cartItem[0].total_order_count++;
+        }
+        else{
+          beerInJson[0].total_order_count = 1;
+          console.log(beerInJson);
+          cart.push(beerInJson);
+        }
+      }) // get beerId from beerInJson
+      // compare if the beerId exists in cart array
 
-  let url = `https://api.punkapi.com/v2/beers/${beerId}`;
-  let beerInJson = await getRandomItemWithUrl(url);
-  cart.push(beerInJson);  
-  
-  sessionStorage.setItem('cart', JSON.stringify(cart))
+    }
 
+    
+    
+    console.log(cart);
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    showTotalItemInCart();
 }
-  
+
+function showTotalItemInCart() {
+    if (localStorage.getItem("cart")) {
+        cart = JSON.parse(localStorage.getItem('cart'));
+    }
+
+    const total_count_span = document.getElementById('total-items-cart');
+    total_count_span.innerText = cart.length;
+}
+
+
+function scrollToTop() {
+    window.scrollTo(0, 0);
+}
+
 renderAllBeers();
+showTotalItemInCart();
